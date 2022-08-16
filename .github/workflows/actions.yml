@@ -9,7 +9,7 @@ jobs:
   Terraform:
     name: Deploy Site
     runs-on: ubuntu-latest
-    default:
+    defaults:
       run:
         working-directory: ${{ env.tf_actions_working_dir }}
     steps:
