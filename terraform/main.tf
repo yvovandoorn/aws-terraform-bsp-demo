@@ -19,7 +19,7 @@ resource "aws_s3_bucket" "website" {
   acl    = "public-read"
   policy  = <<EOF
 {
-     "id" : "MakePublic",
+  "id" : "MakePublic",
    "version" : "2012-10-17",
    "statement" : [
       {
@@ -27,7 +27,7 @@ resource "aws_s3_bucket" "website" {
              "s3:GetObject"
           ],
          "effect" : "Allow",
-         "resource" : "arn:aws:s3:::[BUCKET_NAME_HERE]/*",
+         "resource" : "arn:aws:s3:::mondoo-static-website-bucket/*",
          "principal" : "*"
       }
     ]
