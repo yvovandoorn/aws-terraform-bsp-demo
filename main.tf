@@ -12,13 +12,12 @@ terraform {
     bucket = "mondoo-demo-s3-terraform-backend"
     key    = "terraform.tfstate"
     region = "eu-central-1"
-   }
+  }
 }
 
 # Default set to AWS eu-central-1
 provider "aws" {
-  profile = "default"
-  region  = "eu-central-1"
+  region = "eu-central-1"
 }
 
 # KMS key to be used to encrypt data on buckets
@@ -26,24 +25,24 @@ provider "aws" {
 resource "aws_s3_bucket" "website" {
   bucket = "mondoo-static-website-bucket"
   acl    = "public-read"
-#   policy  = <<EOF
-# {
-#   "id" : "MakePublic",
-#    "version" : "2012-10-17",
-#    "statement" : [
-#       {
-#          "action" : [
-#              "s3:GetObject"
-#           ],
-#          "effect" : "Allow",
-#          "resource" : "arn:aws:s3:::mondoo-static-website-bucket/*",
-#          "principal" : "*"
-#       }
-#     ]
-#   }
-# EOF
+  #   policy  = <<EOF
+  # {
+  #   "id" : "MakePublic",
+  #    "version" : "2012-10-17",
+  #    "statement" : [
+  #       {
+  #          "action" : [
+  #              "s3:GetObject"
+  #           ],
+  #          "effect" : "Allow",
+  #          "resource" : "arn:aws:s3:::mondoo-static-website-bucket/*",
+  #          "principal" : "*"
+  #       }
+  #     ]
+  #   }
+  # EOF
 
   website {
-      index_document = "index.html"
-   }
+    index_document = "index.html"
+  }
 }
