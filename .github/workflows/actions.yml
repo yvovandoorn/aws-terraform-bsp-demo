@@ -6,16 +6,19 @@ on:
       - main
 
 jobs:
-  tf_fmt:
+  Terraform:
     name: Deploy Site
     runs-on: ubuntu-latest
     steps:
 
     - name: Checkout Repo
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
 
     - name: Terraform Init
-      uses: hashicorp/terraform-github-actions/init@v0.4.0
+      run: terraform init
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TF_ACTION_WORKING_DIR: 'terraform'
@@ -23,10 +26,10 @@ jobs:
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Terraform Validate
-      uses: hashicorp/terraform-github-actions/validate@v0.3.7
+      run: terraform validate
 
     - name: Terraform Apply
-      uses: hashicorp/terraform-github-actions/apply@v0.4.0
+      run: terraform apply -auto-approve
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TF_ACTION_WORKING_DIR: 'terraform'
@@ -38,6 +41,6 @@ jobs:
       env:
         SOURCE_DIR: './src'
         AWS_REGION: 'us-east-1'
-        AWS_S3_BUCKET: '[BUCKET_NAME_HERE]'
+        AWS_S3_BUCKET: 'mondoo-static-website-bucket'
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
