@@ -12,10 +12,10 @@ jobs:
     steps:
 
     - name: Checkout Repo
-      uses: actions/checkout@latest
+      uses: actions/checkout@v3
 
     - name: Scan with Mondoo
-      uses: mondoo/actions@main
+      uses: mondoohq/actions@main
       with:
         service_account_credentials: ${{ secrets.MONDOO_CLIENT_ACCOUNT }}
         scan_type: tf
