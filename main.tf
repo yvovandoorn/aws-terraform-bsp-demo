@@ -12,9 +12,7 @@ terraform {
   required_version = ">= 0.14.9"
 
   backend "s3" {
-    bucket = "mondoo-demo-s3-terraform-backend"
     key    = "terraform.tfstate"
-    region = "${var.aws-region}"
   }
 }
 
