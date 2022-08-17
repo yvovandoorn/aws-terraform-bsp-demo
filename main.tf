@@ -16,13 +16,20 @@ terraform {
   }
 }
 
-# Default set to AWS eu-central-1
+# Set aws region from GitHub Actions
 provider "aws" {
   region = "${var.aws-region}"
 }
 
 resource "aws_s3_bucket" "website" {
   bucket = "${var.website-bucket-name}"
+
+# Per https://registry.terraform.io/providers/hashicorp/aws/3.75.2/docs/resources/s3_bucket_website_configuration
+  lifecycle {
+  ignore_changes = [
+    website
+  ]
+}
 }
 
 resource "aws_s3_bucket_acl" "website" {
