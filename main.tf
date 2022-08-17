@@ -29,7 +29,7 @@ resource "aws_s3_bucket_acl" "website" {
   acl = "public-read"
 }
 
-resource "aws_s3_bucket_policy" {
+resource "aws_s3_bucket_policy" "website" {
   bucket = aws_s3_bucket.website.id
   policy = jsonencode({
     Version = "2012-10-17"
