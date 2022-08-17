@@ -20,29 +20,38 @@ provider "aws" {
   region = "eu-central-1"
 }
 
-# KMS key to be used to encrypt data on buckets
-
 resource "aws_s3_bucket" "website" {
-  bucket = "mondoo-static-website-bucket"
-  acl    = "public-read"
-  policy = <<EOF
-  {
-    "id" : "MakePublic",
-     "version" : "2012-10-17",
-     "statement" : [
-        {
-           "action" : [
-               "s3:GetObject"
-            ],
-           "effect" : "Allow",
-           "resource" : "arn:aws:s3:::mondoo-static-website-bucket/*",
-           "principal" : "*"
-        }
-      ]
-    }
-  EOF
+  bucket_prefix = "mondoo-static-website-bucket-"
+}
 
-  website {
-    index_document = "index.html"
+resource "aws_s3_bucket_acl" "website" {
+  bucket = aws_s3_bucket.website.id
+  acl = "public-read"
+}
+
+resource "aws_s3_bucket_policy" {
+  bucket = aws_s3_bucket.website.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid = "PublicReadGetObject"
+        Effect = "Allow",
+        Action = "s3:GetObject"
+        Resource = [
+          aws_s3_bucket.website.arn, 
+          "${aws_s3_bucket.website.arn}/*",
+        ]
+        Principal = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_s3_bucket_website_configuration" "website" {
+  bucket = aws_s3_bucket.website.id
+
+  index_document {
+    suffix = "index.html"
   }
 }
