@@ -18,7 +18,7 @@ jobs:
       uses: mondoohq/actions@main
       with:
         service_account_credentials: ${{ secrets.MONDOO_CLIENT_ACCOUNT }}
-        scan_type: tf
+        scan_type: terraform
         path: '*.tf'
 
     - name: Setup Terraform
