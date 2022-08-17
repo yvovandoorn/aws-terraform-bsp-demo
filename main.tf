@@ -25,22 +25,22 @@ provider "aws" {
 resource "aws_s3_bucket" "website" {
   bucket = "mondoo-static-website-bucket"
   acl    = "public-read"
-  #   policy  = <<EOF
-  # {
-  #   "id" : "MakePublic",
-  #    "version" : "2012-10-17",
-  #    "statement" : [
-  #       {
-  #          "action" : [
-  #              "s3:GetObject"
-  #           ],
-  #          "effect" : "Allow",
-  #          "resource" : "arn:aws:s3:::mondoo-static-website-bucket/*",
-  #          "principal" : "*"
-  #       }
-  #     ]
-  #   }
-  # EOF
+  policy = <<EOF
+  {
+    "id" : "MakePublic",
+     "version" : "2012-10-17",
+     "statement" : [
+        {
+           "action" : [
+               "s3:GetObject"
+            ],
+           "effect" : "Allow",
+           "resource" : "arn:aws:s3:::mondoo-static-website-bucket/*",
+           "principal" : "*"
+        }
+      ]
+    }
+  EOF
 
   website {
     index_document = "index.html"
