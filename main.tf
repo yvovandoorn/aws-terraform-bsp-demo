@@ -1,3 +1,6 @@
+variable website-bucket-name {}
+variable aws-region {}
+
 terraform {
   required_providers {
     aws = {
@@ -11,17 +14,17 @@ terraform {
   backend "s3" {
     bucket = "mondoo-demo-s3-terraform-backend"
     key    = "terraform.tfstate"
-    region = "eu-central-1"
+    region = "${var.aws-region}"
   }
 }
 
 # Default set to AWS eu-central-1
 provider "aws" {
-  region = "eu-central-1"
+  region = "${var.aws-region}"
 }
 
 resource "aws_s3_bucket" "website" {
-  bucket_prefix = "mondoo-static-website-bucket-"
+  bucket = "${var.website-bucket-name}"
 }
 
 resource "aws_s3_bucket_acl" "website" {
