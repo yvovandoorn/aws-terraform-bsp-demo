@@ -19,7 +19,7 @@ jobs:
       with:
         service_account_credentials: ${{ secrets.MONDOO_CLIENT_ACCOUNT }}
         scan_type: terraform
-        path: '*.tf'
+        path: '.'
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
