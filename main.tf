@@ -78,14 +78,6 @@ resource "aws_s3_bucket_logging" "website" {
   target_prefix = "log-${aws_s3_bucket.website.id}/"
 }
 
-resource "aws_s3_bucket_public_access_block" "website" {
-  bucket = aws_s3_bucket.website.id
-  block_public_policy = true
-  block_public_acls = true
-  ignore_public_acls = true
-  restrict_public_buckets = true
-}
-
 resource "aws_s3_bucket_server_side_encryption_configuration" "website" {
 bucket = aws_s3_bucket.website.id
 rule {
@@ -94,4 +86,70 @@ rule {
     sse_algorithm = "aws:kms"
   }
 }
+}
+
+# Setup the logging bucket
+resource "aws_s3_bucket" "log_bucket" {
+  bucket = "${var.website-bucket-name}-logbucket"
+}
+
+resource "aws_s3_bucket_acl" "log_bucket" {
+  bucket = aws_s3_bucket.log_bucket.id
+  acl = "private"
+}
+
+resource "aws_s3_bucket_versioning" "log_bucket" {
+  bucket = aws_s3_bucket.log_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "log_bucket" {
+bucket = aws_s3_bucket.log_bucket.id
+rule {
+  apply_server_side_encryption_by_default {
+    kms_master_key_id = aws_kms_key.mykey.arn
+    sse_algorithm = "aws:kms"
+  }
+}
+}
+
+resource "aws_s3_bucket_logging" "log_bucket" {
+  bucket = aws_s3_bucket.log_bucket.id
+  target_bucket = aws_s3_bucket.log_bucket2.id
+  target_prefix = "log-${aws_s3_bucket.log_bucket.id}/"
+}
+
+# Setup the logging bucket
+resource "aws_s3_bucket" "log_bucket2" {
+  bucket = "${var.website-bucket-name}-logbucket2"
+}
+
+resource "aws_s3_bucket_acl" "log_bucket2" {
+  bucket = aws_s3_bucket.log_bucket2.id
+  acl = "private"
+}
+
+resource "aws_s3_bucket_versioning" "log_bucket2" {
+  bucket = aws_s3_bucket.log_bucket2.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "log_bucket2" {
+bucket = aws_s3_bucket.log_bucket2.id
+rule {
+  apply_server_side_encryption_by_default {
+    kms_master_key_id = aws_kms_key.mykey.arn
+    sse_algorithm = "aws:kms"
+  }
+}
+}
+
+resource "aws_s3_bucket_logging" "log_bucket2" {
+  bucket = aws_s3_bucket.log_bucket2.id
+  target_bucket = aws_s3_bucket.log_bucket.id
+  target_prefix = "log-${aws_s3_bucket.log_bucket2.id}/"
 }
