@@ -17,7 +17,7 @@ jobs:
     - name: Scan with Mondoo
       uses: mondoohq/actions/terraform@main
       with:
-        service_account_credentials: ${{ secrets.MONDOO_CLIENT_ACCOUNT }}
+        service-account-credentials: ${{ secrets.MONDOO_SERVICE_ACCOUNT }}
         scan_type: terraform
         path: '.'
 
