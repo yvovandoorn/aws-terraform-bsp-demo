@@ -1,4 +1,4 @@
-name: Deploy Infrastructure
+name: Deploy Files Bucket
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   terraform-deploy:
-    name: Deploy Site
+    name: Deploy Files Bucket
     runs-on: ubuntu-latest
     steps:
 
