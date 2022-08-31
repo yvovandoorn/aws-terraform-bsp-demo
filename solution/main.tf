@@ -15,7 +15,7 @@ terraform {
 }
 
 # Expect this variables to be set by GitHub Actions
-variable website-bucket-name {}
+variable files-bucket-name {}
 variable aws-region {}
 
 # Set aws region from GitHub Actions
@@ -28,64 +28,46 @@ resource "aws_kms_key" "mykey" {
   deletion_window_in_days = 10
 }
 
-resource "aws_s3_bucket" "website" {
-  bucket = "${var.website-bucket-name}"
+resource "aws_s3_bucket" "files" {
+  bucket = "${var.files-bucket-name}"
 }
 
-resource "aws_s3_bucket_acl" "website" {
-  bucket = aws_s3_bucket.website.id
-  acl = "public-read"
-}
-
-resource "aws_s3_bucket_policy" "website" {
-  bucket = aws_s3_bucket.website.id
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid = "PublicReadGetObject"
-        Effect = "Allow",
-        Action = "s3:GetObject"
-        Resource = [
-          aws_s3_bucket.website.arn, 
-          "${aws_s3_bucket.website.arn}/*",
-        ]
-        Principal = "*"
-      },
-    ]
-  })
-}
-
-resource "aws_s3_bucket_website_configuration" "website" {
-  bucket = aws_s3_bucket.website.id
-
-  index_document {
-    suffix = "index.html"
-  }
+resource "aws_s3_bucket_acl" "files" {
+  bucket = aws_s3_bucket.files.id
+  acl = "private"
 }
 
 ####
-resource "aws_s3_bucket_versioning" "website" {
-  bucket = aws_s3_bucket.website.id
+resource "aws_s3_bucket_versioning" "files" {
+  bucket = aws_s3_bucket.files.id
   versioning_configuration {
     status = "Enabled"
   }
 }
 
-resource "aws_s3_bucket_logging" "website" {
-  bucket = aws_s3_bucket.website.id
+resource "aws_s3_bucket_logging" "files" {
+  bucket = aws_s3_bucket.files.id
   target_bucket = aws_s3_bucket.log_bucket.id
-  target_prefix = "log-${aws_s3_bucket.website.id}/"
+  target_prefix = "log-${aws_s3_bucket.files.id}/"
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "website" {
-bucket = aws_s3_bucket.website.id
+resource "aws_s3_bucket_server_side_encryption_configuration" "files" {
+bucket = aws_s3_bucket.files.id
 rule {
   apply_server_side_encryption_by_default {
     kms_master_key_id = aws_kms_key.mykey.arn
     sse_algorithm = "aws:kms"
   }
 }
+}
+
+resource "aws_s3_bucket_public_access_block" "files" {
+  bucket = aws_s3_bucket.files.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 # Setup the logging bucket
@@ -121,7 +103,16 @@ resource "aws_s3_bucket_logging" "log_bucket" {
   target_prefix = "log-${aws_s3_bucket.log_bucket.id}/"
 }
 
-# Setup the logging bucket
+resource "aws_s3_bucket_public_access_block" "log_bucket" {
+  bucket = aws_s3_bucket.log_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# Setup the second logging bucket
 resource "aws_s3_bucket" "log_bucket2" {
   bucket = "${var.website-bucket-name}-logbucket2"
 }
@@ -152,4 +143,13 @@ resource "aws_s3_bucket_logging" "log_bucket2" {
   bucket = aws_s3_bucket.log_bucket2.id
   target_bucket = aws_s3_bucket.log_bucket.id
   target_prefix = "log-${aws_s3_bucket.log_bucket2.id}/"
+}
+
+resource "aws_s3_bucket_public_access_block" "log_bucket2" {
+  bucket = aws_s3_bucket.log_bucket2.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
