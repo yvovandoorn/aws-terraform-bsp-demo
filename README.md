@@ -1,12 +1,12 @@
 # Catching Terraform Compliance Issues with Mondoo 
 
-- [Prerequisites](#prerequisites)
-- [Setup GitHub Repo](#setup-github-repo)
-- [Getting your first scan! (5 minutes)](#getting-your-first-scan-5-minutes)
-    - [Method #1 - Via the GitHub Actions interface under the `Scan with Mondoo` step](#method-1---via-the-github-actions-interface-under-the-scan-with-mondoo-step)
-    - [Method #2 (Recommended) - Via the Mondoo Console.](#method-2-recommended---via-the-mondoo-console)
-- [Enforcing a score in the pipeline.](#enforcing-a-score-in-the-pipeline)
-- [Getting to a hundred (100)!](#getting-to-a-hundred-100)
+      * [Prerequisites](#prerequisites)
+      * [Setup GitHub Repo](#setup-github-repo)
+      * [Getting your first scan! (5 minutes)](#getting-your-first-scan-5-minutes)
+            * [Method #1 - Via the GitHub Actions interface under the Scan with Mondoo step](#method-1---via-the-github-actions-interface-under-the-scan-with-mondoo-step)
+            * [Method #2 (Recommended) - Via the <a href="https://console.mondoo.com/" rel="nofollow">Mondoo Console</a>.](#method-2-recommended---via-the-mondoo-console)
+      * [Enforcing a score in the pipeline.](#enforcing-a-score-in-the-pipeline)
+      * [Getting to a hundred (100)!](#getting-to-a-hundred-100)
 
 ### Prerequisites
 
