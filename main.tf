@@ -71,7 +71,7 @@ resource "aws_s3_bucket_public_access_block" "files" {
 
 # Setup the logging bucket
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = "${var.website-bucket-name}-logbucket"
+  bucket = "${var.files-bucket-name}-logbucket"
 }
 
 resource "aws_s3_bucket_acl" "log_bucket" {
@@ -113,7 +113,7 @@ resource "aws_s3_bucket_public_access_block" "log_bucket" {
 
 # Setup the second logging bucket
 resource "aws_s3_bucket" "log_bucket2" {
-  bucket = "${var.website-bucket-name}-logbucket2"
+  bucket = "${var.files-bucket-name}-logbucket2"
 }
 
 resource "aws_s3_bucket_acl" "log_bucket2" {
