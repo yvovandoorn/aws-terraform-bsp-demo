@@ -1,13 +1,16 @@
-name: Deploy Files Bucket
+name: Deploy Files S3 Bucket
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   terraform-deploy:
-    name: Deploy Files Bucket
+    name: Deploy Files S3 Bucket
     runs-on: ubuntu-latest
     steps:
 
