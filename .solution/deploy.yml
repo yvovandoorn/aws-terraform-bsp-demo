@@ -22,7 +22,7 @@ jobs:
       with:
         service-account-credentials: ${{ secrets.MONDOO_SERVICE_ACCOUNT }}
         path: '.'
-	score-threshold: "85"
+	      score-threshold: "85"
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
