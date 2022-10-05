@@ -17,13 +17,6 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
 
-    - name: Scan with Mondoo
-      uses: mondoohq/actions/terraform-hcl@main
-      with:
-        service-account-credentials: ${{ secrets.MONDOO_SERVICE_ACCOUNT }}
-        path: '.'
-        score-threshold: "85"
-
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
