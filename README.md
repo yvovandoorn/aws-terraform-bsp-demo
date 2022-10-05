@@ -1,4 +1,7 @@
-# Catching Terraform Compliance Issues with Mondoo 
+# AWS Terraform Best Security Practices with Mondoo 
+
+## The Terraform Integration Hackers Don't Want You to Know About
+
 
   * [Prerequisites](#prerequisites)
   * [Setup GitHub Repo](#setup-github-repo)
